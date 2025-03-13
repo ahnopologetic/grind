@@ -1,17 +1,16 @@
+from collections import defaultdict
+
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
-        buffer = defaultdict(int)
-
-        for char in s:
-            buffer[char] += 1
+        tokens = defaultdict(int)
+        for ch in s:
+            tokens[ch] += 1
         
-        for char in t:
-            if buffer[char] == 1:
-                del buffer[char]
-            
-            else:
-                buffer[char] -= 1
-            
+        for ch in t:
+            if ch not in tokens:
+                return False
+            tokens[ch] -= 1
+            if tokens[ch] == 0:
+                del tokens[ch]
         
-        print(buffer)
-        return not buffer
+        return not tokens
