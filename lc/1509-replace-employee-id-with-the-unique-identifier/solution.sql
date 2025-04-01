@@ -1,0 +1,4 @@
+# Write your MySQL query statement below
+select eu.unique_id, e.name
+from Employees e
+LEFT join EmployeeUNI eu using (id)
