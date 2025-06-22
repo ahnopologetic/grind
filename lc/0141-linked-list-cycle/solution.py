@@ -10,12 +10,6 @@ class Solution:
         while fast and fast.next:
             fast = fast.next.next
             slow = slow.next
-
-            # there is cycle
-            if slow == fast:
+            if fast == slow:
                 return True
-
-            
-        
         return False
-            
