@@ -5,17 +5,12 @@
 #         self.next = next
 class Solution:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        prev = None
-        curr = head
+        node = None
 
-        while curr is not None:
-            next_ = curr.next
-
-            # next_.next = prev # swap? why? I thought I should not change curr. However, I can. 
-
-            curr.next = prev
-
-            prev = curr
-            curr = next_
+        while head:
+            temp = head.next
+            head.next = node
+            node = head
+            head = temp
         
-        return prev
+        return node
