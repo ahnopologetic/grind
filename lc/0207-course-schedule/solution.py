@@ -1,32 +1,37 @@
-from collections import defaultdict
 class Solution:
-    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        # let's implement dfs
-        # create a graph first
-        pre = defaultdict(list)
-        
-        for course, req in prerequisites: 
-            pre[course].append(req)
-        
-        taken = set()
+    def buildAdjacencyList(self, n, edgesList):
+        adjList = [[] for _ in range(n)]
+        # c2 (course 2) is a prerequisite of c1 (course 1)
+        # i.e c2c1 is a directed edge in the graph
+        for c1, c2 in edgesList:
+            adjList[c2].append(c1)
+        return adjList
 
-        def dfs(course):
-            if not pre[course]:
-                return True
-            
-            if course in taken:
+
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        adj_list = self.buildAdjacencyList(numCourses, prerequisites)
+
+        state = [0] * numCourses
+        visited = set()
+
+        def has_cycle(v, stack):
+            if v in visited:
+                if v in stack:
+                    return True
                 return False
             
-            taken.add(course)
+            visited.add(v)
+            stack.append(v)
 
-            for req in pre[course]:
-                if not dfs(req): return False
+            for i in adj_list[v]:
+                if has_cycle(i, stack):
+                    return True
             
-            pre[course] = []
-            return True
+            stack.pop()
+            return False
         
-        for c in range(numCourses):
-            if not dfs(c): return False
+        for v in range(numCourses):
+            if has_cycle(v, []):
+                return False
         
         return True
-        
