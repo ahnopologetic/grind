@@ -1,37 +1,36 @@
 class Solution:
-    def buildAdjacencyList(self, n, edgesList):
-        adjList = [[] for _ in range(n)]
-        # c2 (course 2) is a prerequisite of c1 (course 1)
-        # i.e c2c1 is a directed edge in the graph
-        for c1, c2 in edgesList:
-            adjList[c2].append(c1)
-        return adjList
-
-
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        adj_list = self.buildAdjacencyList(numCourses, prerequisites)
+        # dfs or bfs question
+        adj_list = self.build_adj_list(numCourses, prerequisites)
 
         state = [0] * numCourses
-        visited = set()
 
-        def has_cycle(v, stack):
-            if v in visited:
-                if v in stack:
-                    return True
+        def has_cycle(v):
+            if state[v] == 1:
+                # This vertex is processed so we pass.
                 return False
-            
-            visited.add(v)
-            stack.append(v)
+            if state[v] == -1:
+                # This vertex is being processed and it means we have a cycle.
+                return True
+
+            # Set state to -1
+            state[v] = -1
 
             for i in adj_list[v]:
-                if has_cycle(i, stack):
+                if has_cycle(i):
                     return True
-            
-            stack.pop()
+
+            state[v] = 1
             return False
-        
         for v in range(numCourses):
-            if has_cycle(v, []):
+            if has_cycle(v):
                 return False
-        
+    
         return True
+    
+    def build_adj_list(self, n, edgesList):
+        adj_list = [[] for _ in range(n)]
+        for c1, c2 in edgesList:
+            adj_list[c2].append(c1)
+        return adj_list
+        
