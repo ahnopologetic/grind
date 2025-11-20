@@ -1,20 +1,14 @@
 class Solution:
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
-        # ans = 0
-        # sort interval by start
-        # for each interval, check next interval whether it has earlier start than current end, count up when there is until you don't find. 
+        # sort by start interval
+        intervals = sorted(intervals, key=lambda x: x[1])
+        k = float('-inf')
         ans = 0
-        intervals.sort(key=lambda x: x[1])
-        last_end = float('-inf')
 
-        for start, end in intervals:
-            if last_end > start:
-                ans += 1
+        for x, y in intervals:
+            if x >= k:
+                k = y
             else:
-                last_end = end
-        
+                ans += 1
         return ans
-
-
-
         
