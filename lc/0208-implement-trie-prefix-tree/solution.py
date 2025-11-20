@@ -1,7 +1,24 @@
 class TrieNode:
     def __init__(self):
-        self.children = [None] * 26
+        # Initialize links array and isEnd flag
+        self.links = [None] * 26
         self.is_end = False
+
+    def contains_key(self, ch: str) -> bool:
+        return self.links[ord(ch) - ord('a')] is not None
+
+    def get(self, ch: str) -> 'TrieNode':
+        return self.links[ord(ch) - ord('a')]
+
+    def put(self, ch: str, node: 'TrieNode') -> None:
+        self.links[ord(ch) - ord('a')] = node
+
+    def set_end(self) -> None:
+        self.is_end = True
+
+    def is_end(self) -> bool:
+        return self.is_end
+
 
 class Trie:
 
@@ -10,35 +27,31 @@ class Trie:
         
 
     def insert(self, word: str) -> None:
-        new_root = self.root
+        node = self.root
         for ch in word:
-            alpha_index = ord(ch) - ord('a')
-            if new_root.children[alpha_index] == None:
-                new_root.children[alpha_index] = TrieNode()
-            new_root = new_root.children[alpha_index]
-        new_root.is_end = True
-        
+            if not node.contains_key(ch):
+                node.put(ch, TrieNode())
+            node = node.get(ch)
+        node.set_end()
+    
+    def search_prefix(self, word: str) -> TrieNode:
+        node = self.root
+        for ch in word:
+            if node.contains_key(ch):
+                node = node.get(ch)
+            else:
+                return
+        return node
 
     def search(self, word: str) -> bool:
-        new_root = self.root
-        for ch in word:
-            alpha_index = ord(ch) - ord('a')
-            if new_root.children[alpha_index] is None:
-                return False
-            new_root = new_root.children[alpha_index]
-        if new_root.is_end:
-            return True
-        return False
+        node = self.search_prefix(word)
+        return node is not None and node.is_end
+        
+        
 
     def startsWith(self, prefix: str) -> bool:
-        new_root = self.root
-        for ch in prefix:
-            alpha_index = ord(ch) - ord('a')
-            if new_root.children[alpha_index] == None:
-                return False
-            new_root = new_root.children[alpha_index]
-        return True
-        
+        node = self.search_prefix(prefix)
+        return node is not None
 
 
 # Your Trie object will be instantiated and called as such:
