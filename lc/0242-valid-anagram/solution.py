@@ -1,16 +1,16 @@
-from collections import defaultdict
-
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
-        tokens = defaultdict(int)
+        if len(s) != len(t):
+            return False
+        
+        words = [0] * 26
         for ch in s:
-            tokens[ch] += 1
+            words[ord(ch) - ord('a')] += 1
         
         for ch in t:
-            if ch not in tokens:
+            n = ord(ch) - ord('a')
+            if words[n] <= 0:
                 return False
-            tokens[ch] -= 1
-            if tokens[ch] == 0:
-                del tokens[ch]
+            words[n] -= 1
         
-        return not tokens
+        return True
