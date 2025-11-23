@@ -1,12 +1,9 @@
-from collections import defaultdict
-
 class Solution:
     def containsDuplicate(self, nums: List[int]) -> bool:
-        visited = defaultdict(bool)
+        c = Counter()
         for num in nums:
-            if num in visited:
+            if c[num] >= 1:
                 return True
-            visited[num] = True
+            c[num] += 1
+        
         return False
-        
-        
