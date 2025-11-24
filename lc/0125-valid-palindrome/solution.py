@@ -1,19 +1,12 @@
 class Solution:
     def isPalindrome(self, s: str) -> bool:
-        s = s.lower().replace(' ', '')
-        new_s = ""
-        for ch in s:
-            if ch.isalnum():
-                new_s += ch
+        sanitized = "".join([ch for ch in list(s.lower().replace(" ", "")) if ch.isalnum()])
         
-        left, right = 0, len(new_s) - 1
-        ans = True
-        while left < right:
-            if new_s[left] != new_s[right]:
-                ans = False
-                break
-            else:
-                left += 1
-                right -= 1
+        start, end = 0, len(sanitized) - 1
+        while start < end:
+            if sanitized[start] != sanitized[end]:
+                return False
 
-        return ans
+            start += 1
+            end -= 1
+        return True
