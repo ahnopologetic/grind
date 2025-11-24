@@ -1,12 +1,23 @@
 class Solution:
     def isValid(self, s: str) -> bool:
-        hm = dict(("()", "{}", "[]"))
-        stack = []
+        if len(s) % 2 == 1:
+            return False
+        pairs = {
+            ")": "(",
+            "}": "{",
+            "]": "["
+        }
 
-        for char in s:
-            if char in hm.keys():
-                stack.append(char)
-            elif len(stack) == 0 or char != hm[stack.pop()]:
-                return False
+        stack = []
+        for ch in s:
+            if stack and ch in pairs:
+                token = stack.pop()
+                if pairs[ch] != token:
+                    return False
+
+            else:
+                stack.append(ch)
         
-        return len(stack) == 0
+        return not stack
+
+
