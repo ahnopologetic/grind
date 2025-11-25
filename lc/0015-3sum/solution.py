@@ -1,32 +1,24 @@
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        nums.sort()
-        n = len(nums)
-        result = []
-
-        for i in range(n):
-            if i > 0 and nums[i] == nums[i-1]:
-                continue
-            
-            l, r = i+1, n-1
-
-            while l < r:
-                temp = nums[i] + nums[l] + nums[r]
-
-                if temp == 0:
-                    result.append([nums[i], nums[l], nums[r]])
-                    l += 1
-                    # r -= 1
-
-                    while l < r and nums[l] == nums[l-1]:
-                        l += 1
-                    # while l < r and nums[r] == nums[r-1]:
-                    #     r -= 1
-                elif temp > 0:
-                    r -= 1
-                else:
-                    l += 1
-
-        
-        return result
-        
+        # sort -> n * two pointer search
+        # we can reduce n if curr is more than or equal 1 -> it will always be increasing
+        # O(n^2) -> still better than O(n^3)
+        nums = sorted(nums)
+        result = set()
+        for i in range(len(nums)):
+            curr = nums[i]
+            complement = -curr
+            start, end = i + 1, len(nums) - 1
+            while start < end:
+                pair_sum = nums[start] + nums[end]
+                if pair_sum == complement:
+                    result.add((nums[i], nums[start], nums[end]))
+                    start += 1
+                    end -= 1
+                    while start < end and nums[start] == nums[start - 1]:
+                        start += 1
+                elif pair_sum < complement:
+                    start += 1
+                else: 
+                    end -= 1
+        return list(result)
