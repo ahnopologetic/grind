@@ -6,10 +6,16 @@
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
+        # use fast-slow pointer
+        if not head:
+            return False
+        
         fast = slow = head
         while fast and fast.next:
-            fast = fast.next.next
             slow = slow.next
-            if fast == slow:
+            fast = fast.next.next
+
+            if slow == fast:
                 return True
+        
         return False
