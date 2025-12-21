@@ -1,13 +1,15 @@
 class Solution:
     def finalPrices(self, prices: List[int]) -> List[int]:
-        # O(n^2) -> for each price, find nearest smaller price and subtract it
-        # optimal solution: ...?
-
-        for i, price in enumerate(prices):
-            j = i + 1
-            while j < len(prices) and price < prices[j]:
+        # monotonic stack
+        # output: list of final prices
+        # for each price, find nearest smaller or equal price from index i and subtract it
+        # can we use prices[j] multiple times? yes
+        # example = [1,4,1,1,2] -> [0, 3,0,1,2]
+        i, j = 0, 1
+        for n in range(len(prices) - 1):
+            while j < len(prices) and prices[i] < prices[j]:
                 j += 1
-            if j < len(prices):
-                prices[i] = price - prices[j]
-        
+            prices[i] = prices[i] - prices[j] if j < len(prices) else prices[i]
+            i = i + 1
+            j = i + 1
         return prices
