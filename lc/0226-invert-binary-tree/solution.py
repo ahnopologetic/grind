@@ -4,20 +4,19 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
 class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        def swap(root: TreeNode) -> TreeNode:
-            root.left, root.right = root.right, root.left
-            return root
-        
+        # bfs -> flip
         if not root:
-            return root
+            return
+        q = deque([root])
 
-        if root.left:
-            self.invertTree(root.left)
-        
-        if root.right:
-            self.invertTree(root.right)
-
-
-        return swap(root)
+        while q:
+            node = q.popleft()
+            node.left, node.right = node.right, node.left
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+        return root
