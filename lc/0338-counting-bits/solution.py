@@ -1,3 +1,3 @@
 class Solution:
-    def countBits(self, num: int) -> List[int]:
-        return list(map(lambda x: bin(x).count("1"), list(map(lambda x: x, range(num+1)))))
+    def countBits(self, n: int) -> List[int]:
+        return [bin(i).count('1') for i in range(n+1)]
